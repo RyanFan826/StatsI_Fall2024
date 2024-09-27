@@ -63,13 +63,21 @@ print(t_test)
 #####################
 ##1.the relationships among Y, X1, X2, and X3
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
+pdf("plot.relationships_YuFan.pdf")
 pairs(expenditure[, c("Y", "X1", "X2", "X3")], main = "Scatterplot Matrix")
+dev.off()
+
+matrix <- cor(expenditure[, c("Y", "X1", "X2", "X3")])
+print(matrix)
+summary(expenditure)
+sink("summary.txt")
+print(summary(expenditure) )
+sink()
 
 #Y and X1
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
-plot(x = expenditure$X1, y = expenditure$Y, main = "Y vs X1 Scatter Plot", xlab = "X1", ylab = "Y", pch = 19, col = "blue")  
 pdf("plot.Y.X1_YuFan.pdf")
-plot(expenditure$Y, expenditure$X1)
+plot(x = expenditure$X1, y = expenditure$Y, main = "Y vs X1 Scatter Plot", xlab = "X1", ylab = "Y", pch = 19, col = "blue")  
 dev.off()
 
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
@@ -85,7 +93,9 @@ output_stargazer("regression_outputYX1.txt", regression_model)
 
 #Y and X2
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
+pdf("plot.Y.X2_YuFan.pdf")
 plot(x = expenditure$X2, y = expenditure$Y, main = "Y vs X2 Scatter Plot", xlab = "X2", ylab = "Y", pch = 19, col = "blue")  
+dev.off()
 
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
 regression_model <- lm(Y ~ X2, data=expenditure)
@@ -99,7 +109,9 @@ output_stargazer("regression_outputYX2.txt", regression_model)
 
 #Y and X3
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
+pdf("plot.Y.X3_YuFan.pdf")
 plot(x = expenditure$X3, y = expenditure$Y, main = "Y vs X3 Scatter Plot", xlab = "X3", ylab = "Y", pch = 19, col = "blue")  
+dev.off()
 
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
 regression_model <- lm(Y ~ X3, data=expenditure)
@@ -113,7 +125,9 @@ output_stargazer("regression_outputYX3.txt", regression_model)
 
 #X1 and X2
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
+pdf("plot.X1.X2_YuFan.pdf")
 plot(x = expenditure$X1, y = expenditure$X2, main = "X1 vs X2 Scatter Plot", xlab = "X1", ylab = "X2", pch = 19, col = "blue")  
+dev.off()
 
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
 regression_model <- lm(X1 ~ X2, data=expenditure)
@@ -127,7 +141,9 @@ output_stargazer("regression_outputX1X2.txt", regression_model)
 
 #X1 and X3
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
+pdf("plot.X1.X3_YuFan.pdf")
 plot(x = expenditure$X1, y = expenditure$X3, main = "X1 vs X3 Scatter Plot", xlab = "X1", ylab = "X3", pch = 19, col = "blue")  
+dev.off()
 
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
 regression_model <- lm(X1 ~ X3, data=expenditure)
@@ -141,7 +157,9 @@ output_stargazer("regression_outputX1X3.txt", regression_model)
 
 #X2 and X3
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
+pdf("plot.X2.X3_YuFan.pdf")
 plot(x = expenditure$X2, y = expenditure$X3, main = "X2 vs X3 Scatter Plot", xlab = "X2", ylab = "X3", pch = 19, col = "blue")  
+dev.off()
 
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
 regression_model <- lm(X2 ~ X3, data=expenditure)
@@ -156,36 +174,30 @@ output_stargazer("regression_outputX2X3.txt", regression_model)
 ##2. plot the relationship between Y and Region
 library(ggplot2) 
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
-ggplot(expenditure, aes(x = Region, y = Y, fill = Region)) + 
+boxplotYregion <- ggplot(expenditure, aes(x = Region, y = Y, fill = Region)) + 
   geom_point() +
   theme_minimal() +
   labs(title = "Boxplot of Expenditure on Housing Assistance by Region",
        x = "Region",
        y = "Expenditure (Y)",
        fill = "Region")
-
-pdf("boxplot.Y.Region_YuFan.pdf")
-plot(expenditure$Region, expenditure$Y)
-dev.off()
+ggsave("boxplot.Y.Region_YuFan.pdf", plot = boxplotYregion, width = 8, height = 6)
 
 #which region has the highest per capita expenditure on housing assistance?
-ggplot(expenditure, aes(x = Region, y = Y, fill = Region)) + 
+barplotYregion <- ggplot(expenditure, aes(x = Region, y = Y, fill = Region)) + 
   geom_bar(stat = "summary", fun = "mean") +
   theme_minimal() +
   labs(title = "Average Expenditure on Housing Assistance by Region",
        x = "Region",
        y = "Average Expenditure (Y)",
        fill = "Region")
-
-pdf("barplot.Y.Region_YuFan.pdf")
-plot(expenditure$Region, expenditure$Y)
-dev.off()
+ggsave("barplot.Y.Region_YuFan.pdf", plot = barplotYregion, width = 8, height = 6)
 
 ##3 plot the relationship between Y and X1
 library(ggplot2)
-expenditure$Region <- as.factor(expenditure$Region)
 
-ggplot(expenditure, aes(x = X1, y = Y, color = Region, shape = Region)) + 
+expenditure$Region <- as.factor(expenditure$Region)
+YX1region <- ggplot(expenditure, aes(x = X1, y = Y, color = Region, shape = Region)) + 
   geom_point() +  
   scale_color_brewer(palette = "Set1") +
   scale_shape_manual(values = c(1, 2, 3, 4)) +  
@@ -194,8 +206,4 @@ ggplot(expenditure, aes(x = X1, y = Y, color = Region, shape = Region)) +
        x = "X1",
        y = "Y",
        color = "Region") 
-
-pdf("plot.Y.X1Region_YuFan.pdf")
-plot(expenditure$Y, expenditure$X1)
-dev.off()
-
+ggsave("plot_Y_X1_by_Region.pdf", plot = YX1region, width = 8, height = 6)
