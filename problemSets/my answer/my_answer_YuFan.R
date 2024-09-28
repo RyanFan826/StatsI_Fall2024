@@ -50,7 +50,7 @@ confint90
 ##2.Next,the school counselor was curious whether the average student IQ in her school
 #is higher than the average IQ score(100) among all the schools in the country.
 #Using the same sample, conduct the appropriate hypothesis test with α=0.05.
-#H0: Average IQ of students in schools ≤ 100  H1: Average IQ of students in schools > 100
+#H0: Average IQ of students in schools <= 100  H1: Average IQ of students in schools > 100
 t_test <- t.test(y, mu = 100, alternative = "greater")
 print(t_test)
 #t = -0.59574, df = 24, p-value = 0.7215
@@ -74,22 +74,16 @@ sink("summary.txt")
 print(summary(expenditure) )
 sink()
 
+# Create correlation matrix
+expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
+cor_matrix <- cor(expenditure[, c("Y", "X1", "X2", "X3")])
+print(cor_matrix)
+
 #Y and X1
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
 pdf("plot.Y.X1_YuFan.pdf")
 plot(x = expenditure$X1, y = expenditure$Y, main = "Y vs X1 Scatter Plot", xlab = "X1", ylab = "Y", pch = 19, col = "blue")  
 dev.off()
-
-expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
-regression_model <- lm(Y ~ X1, data=expenditure)
-summary(regression_model)
-output_stargazer <- function(outputFile, model) {
-  output <- capture.output(stargazer(model, type = "text"))
-  writeLines(output, con = outputFile)
-}
-install.packages("stargazer")
-library(stargazer)
-output_stargazer("regression_outputYX1.txt", regression_model)
 
 #Y and X2
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
@@ -97,31 +91,11 @@ pdf("plot.Y.X2_YuFan.pdf")
 plot(x = expenditure$X2, y = expenditure$Y, main = "Y vs X2 Scatter Plot", xlab = "X2", ylab = "Y", pch = 19, col = "blue")  
 dev.off()
 
-expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
-regression_model <- lm(Y ~ X2, data=expenditure)
-summary(regression_model)
-output_stargazer <- function(outputFile, model) {
-  output <- capture.output(stargazer(model, type = "text"))
-  writeLines(output, con = outputFile)
-}
-library(stargazer)
-output_stargazer("regression_outputYX2.txt", regression_model)
-
 #Y and X3
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
 pdf("plot.Y.X3_YuFan.pdf")
 plot(x = expenditure$X3, y = expenditure$Y, main = "Y vs X3 Scatter Plot", xlab = "X3", ylab = "Y", pch = 19, col = "blue")  
 dev.off()
-
-expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
-regression_model <- lm(Y ~ X3, data=expenditure)
-summary(regression_model)
-output_stargazer <- function(outputFile, model) {
-  output <- capture.output(stargazer(model, type = "text"))
-  writeLines(output, con = outputFile)
-}
-library(stargazer)
-output_stargazer("regression_outputYX3.txt", regression_model)
 
 #X1 and X2
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
@@ -129,47 +103,17 @@ pdf("plot.X1.X2_YuFan.pdf")
 plot(x = expenditure$X1, y = expenditure$X2, main = "X1 vs X2 Scatter Plot", xlab = "X1", ylab = "X2", pch = 19, col = "blue")  
 dev.off()
 
-expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
-regression_model <- lm(X1 ~ X2, data=expenditure)
-summary(regression_model)
-output_stargazer <- function(outputFile, model) {
-  output <- capture.output(stargazer(model, type = "text"))
-  writeLines(output, con = outputFile)
-}
-library(stargazer)
-output_stargazer("regression_outputX1X2.txt", regression_model)
-
 #X1 and X3
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
 pdf("plot.X1.X3_YuFan.pdf")
 plot(x = expenditure$X1, y = expenditure$X3, main = "X1 vs X3 Scatter Plot", xlab = "X1", ylab = "X3", pch = 19, col = "blue")  
 dev.off()
 
-expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
-regression_model <- lm(X1 ~ X3, data=expenditure)
-summary(regression_model)
-output_stargazer <- function(outputFile, model) {
-  output <- capture.output(stargazer(model, type = "text"))
-  writeLines(output, con = outputFile)
-}
-library(stargazer)
-output_stargazer("regression_outputX1X3.txt", regression_model)
-
 #X2 and X3
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=T)
 pdf("plot.X2.X3_YuFan.pdf")
 plot(x = expenditure$X2, y = expenditure$X3, main = "X2 vs X3 Scatter Plot", xlab = "X2", ylab = "X3", pch = 19, col = "blue")  
 dev.off()
-
-expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_Fall2024/main/datasets/expenditure.txt", header=TRUE)
-regression_model <- lm(X2 ~ X3, data=expenditure)
-summary(regression_model)
-output_stargazer <- function(outputFile, model) {
-  output <- capture.output(stargazer(model, type = "text"))
-  writeLines(output, con = outputFile)
-}
-library(stargazer)
-output_stargazer("regression_outputX2X3.txt", regression_model)
 
 ##2. plot the relationship between Y and Region
 library(ggplot2) 
@@ -195,7 +139,6 @@ ggsave("barplot.Y.Region_YuFan.pdf", plot = barplotYregion, width = 8, height = 
 
 ##3 plot the relationship between Y and X1
 library(ggplot2)
-
 expenditure$Region <- as.factor(expenditure$Region)
 YX1region <- ggplot(expenditure, aes(x = X1, y = Y, color = Region, shape = Region)) + 
   geom_point() +  
